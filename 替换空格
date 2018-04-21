@@ -1,0 +1,45 @@
+#include<iostream>
+using namespace std;
+const int Max_Len = 100;//数组最大长度
+void Space_Change(char str[Max_Len],int max_len)
+{
+    if (str==nullptr||max_len<=0) return ;
+    int first_len = 0;　　　　　　　　　　　　　　　　　　//数组原长度
+    int second_len = 0;　　　　　　　　　　　　　　　　　 //替换完成后的数组长度
+    int space_len = 0;                               //空格数
+    int i = 0;
+    while (str[i] != '\0'){　　　　　　　　　　　　　　　//先扫描一次得到空格数和原数组长度
+        if (str[i] == ' ')
+            ++space_len;
+        ++i;
+    }
+    first_len = i + 1;
+    second_len = first_len + 2 * space_len;
+    if (second_len > max_len)　　　　　　　　　　　　　　//如果新数组长度太大，则返回
+        return;
+    int p1 = first_len - 1;　　　　　　　　　　　　　　　 //p1指向原数组最后一个位置
+    int p2 = second_len - 1;　　　　　　　　　　　　　　  //p2指向新数组的最后一个位置
+    while (p1 != p2){
+        if (str[p1] == ' '){　　　　　　　　　　　　　　  //遇到空格替换
+            --p1;
+            str[p2--] = '0';
+            str[p2--] = '2';
+            str[p2--] = '%';
+        }
+        else{                                        //否则直接移动复制
+            str[p2--] = str[p1--];
+        }
+    }
+    for (int i = 0; i < second_len; i++)             //输出替换后的新数组
+    {
+        cout << str[i] << " ";
+    }
+    cout << endl;
+}
+int main()
+{
+    char string[Max_Len] = "welcome to my world!";
+    Space_Change(string, Max_Len);
+    system("pause");
+    return 0;
+}
