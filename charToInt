@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <limits>
+using namespace std;
+bool input = false; //全局变量
+
+int strtoint(const char* str){
+    //当实参是const时，引用形参和指针形参前要加const限定符，因为不能让函数形参的改变导致实参的值改变
+    //g_nStatus = kInvalid;
+    input = false;
+    bool minus = false;  //符号初始化为正
+    long result = 0;
+    
+    if(str!=NULL && *str !='\0'){
+        //若str不是空指针，也不是空字符串.首位先判断正负号
+        
+        if(*str=='+') str++;
+        else if(*str =='-'){
+            str++;
+            minus = true;
+        }
+        while (*str !='\0') {
+            //判断剩下的字符
+            if(*str >='0' && *str <='9'){
+                result = result * 10 + (*str-'0');
+                if((result>numeric_limits<int>::max() && !minus) || (result<numeric_limits<int>::min() && minus )){  //溢出，大于最大正整数且小于最小负整数
+                    result = 0;
+                    break;
+                }
+                str++;
+            }
+            else{
+                //0-9之外非法字符
+                result=0;
+                break;
+            }
+    }
+        if(*str == '\0'){
+            //遍历到最后一个字符，说明是有效输入；检查正负号
+            input = true;
+            if(minus){
+                result = 0-result;
+            }
+        }
+    }
+    return static_cast<int>(result);
+}
+    
+int main(){
+    char str[10] = {0};
+    printf("please input string: ");
+    scanf("%s",str);
+    int result = strtoint(str);
+    printf("output: %d\n",result);
+    printf("status: %d\n",input);
+    return 0;
+}
+
+
