@@ -1,0 +1,55 @@
+//用两个栈实现一个队列，一个栈用于入队列，另一个用来出队列
+#include<iostream>
+#include <stack>
+using namespace std;
+template<class T>
+class CQueue{
+public:
+    void appendTail(const T& node);
+    void deleteHead();
+    
+private:
+    stack<T> s1;
+    stack<T> s2;
+};
+
+template<typename T> void CQueue<T>::appendTail(const T &node)
+{
+    s1.push(node);  //入栈
+}
+
+template <typename T> void CQueue<T>::deleteHead()
+{
+    if(s2.empty()) //若s2栈为空，将s1中的数据出栈并压入s2中
+    {
+        while (!s1.empty()) {
+            T& data = s1.top();
+            s1.pop();
+            s2.push(data);
+        }
+        cout<<s2.top()<<" ";
+        s2.pop();
+    }
+    else{
+        cout<<s2.top()<<" ";
+        s2.pop();
+    }
+}
+
+void Test(){
+    CQueue<int> q;
+    q.appendTail(1);
+    q.appendTail(2);
+    q.appendTail(3);
+    q.appendTail(4);
+    
+    q.deleteHead();
+    q.deleteHead();
+    q.deleteHead();
+    q.deleteHead();
+}
+
+int main(){
+    Test();
+    return 0;
+}
