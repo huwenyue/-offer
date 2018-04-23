@@ -1,0 +1,63 @@
+#include<iostream>
+#include <queue>
+using namespace std;
+template<class T>
+class cstack{
+public:
+    void stackpush(const T& node);
+    void stackpop();
+    
+private:
+    queue<T> q1;
+    queue<T> q2;
+};
+
+template<typename T> void cstack<T>::stackpush(const T &node)
+{
+    q1.push(node);  //入队列
+}
+
+template <typename T> void cstack<T>::stackpop()
+{
+    if(q1.empty() && q2.empty()){
+        throw ("the stack is empty!");
+    }
+    if(!q1.empty() && q2.empty()) //若q2队列为空，将q1中的数据除第一个外出队列并压入q2中
+    {
+        while (q1.size()>1) { //将q1中除最后一个元素弹出，并压入q2中
+            T& data = q1.front();
+            q1.pop();
+            q2.push(data);
+        }
+        cout<<q1.front()<<" ";  //输出q1的最后一个元素
+        q1.pop();
+    }
+    else{
+        while (q2.size()>1) {  //将q2中除最后一个元素弹出，并压入q1中
+            T& data = q2.front();
+            q2.pop();
+            q1.push(data);
+        }
+        cout<<q2.front()<<" ";  //输出q2的最后一个元素
+        q2.pop();
+    }
+}
+
+void Test(){
+    cstack<int> s;
+    s.stackpush(1);
+    s.stackpush(2);
+    s.stackpush(3);
+    s.stackpush(4);
+    
+    s.stackpop();
+    s.stackpop();
+    s.stackpop();
+    s.stackpop();
+
+}
+
+int main(){
+    Test();
+    return 0;
+}
