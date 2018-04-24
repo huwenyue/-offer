@@ -1,0 +1,19 @@
+//获取给定数字的二进制中1的个数
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+
+int Numberof1(int n){
+    int count = 0;
+    while (n) {
+        count++;
+        n = n & (n-1);
+    }
+    return count;
+}
+int main(){
+    int num = 5;  //测试用例
+    int count = Numberof1(num);
+    printf("%d\n",count);
+    return 0;
+}
