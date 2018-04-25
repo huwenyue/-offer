@@ -1,0 +1,70 @@
+//打印1到最大的n位数,递归实现
+////n位所有十进制数：把数字的每一位都从0到9排列一遍，但是在打印时，数字排在前面的0不打印出来
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+using namespace std;
+
+//void Print1ToMaxofNdigitsRecur(char* number,int length,int index);
+void printnumber(char *number,int n,int index);
+void Print(char* number);
+
+//第二种方法实现（使用递归）
+void printtomax2(int n)
+{
+    try
+    {
+        if(n<=0)
+        throw "参数不合法";
+        char *number=new char[n+1];
+        number[n]='\0';
+        for(int i=0;i<10;i++){
+            number[0]=i+'0';
+            printnumber(number,n,0);//调用递归方法
+        }
+        delete[] number;
+    }
+    catch(exception e)
+    {
+        cerr<<e.what()<<endl;
+    }
+    
+}
+void printnumber(char *number,int n,int index)
+{
+    //判断最后一位数字是否已经赋值，是则打印
+    if(index==n-1)
+    {
+        Print(number);
+        return;
+    }
+    //否则递归赋值，直到到达最后一位
+    else
+    {
+        //从下一位开始，0-9依次赋值
+        for(int i=0;i<10;i++)
+        {
+            number[index+1]='0'+i;
+            
+            printnumber(number,n,index+1);
+        }
+    }
+}
+
+void Print(char* number){
+    bool beginprint=false;  // 区分是前面的0还是数字中的0，为true就一直打印下去
+    int length = strlen(number); //长度
+    for (int i=0; i<length; i++) {
+        if(number[i]!='0' && (beginprint==false))
+        //遇到第一个非0数则设置beginprint为true,开始打印
+        beginprint=true;
+        if(beginprint)
+        cout<<number[i];
+    }
+    cout<<"\t";
+}
+
+int main(){
+    printtomax2(2);
+    return 0;
+}
