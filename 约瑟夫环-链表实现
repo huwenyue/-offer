@@ -1,0 +1,85 @@
+//约瑟夫环：n个人，从编号为k的人开始报数，数到m的那个人出列，直到全部出列
+#include <stdio.h>
+#include <stdlib.h>
+struct Node{
+    int data;
+    struct Node *next;
+};
+typedef struct Node node ;  //给结构体Node 赋予名字node
+typedef struct Linklist{
+    node *phead;
+    node *ptail;
+    int len;
+}linklist;
+static node *GetNode(int i){   //静态函数：只能本文件访问
+    node *pNode;
+    pNode = (node*) malloc(sizeof(node));  //动态分配内存
+    if(!pNode){
+        printf("Error,the memory is not enough!\n");
+        exit(-1);
+    }
+    pNode->data = i;
+    pNode->next = NULL;
+    return pNode;
+}
+void init_list(linklist *plist){
+    node *p;
+    p = GetNode(1);   //用第一个结点初始化循环单链表
+    plist->phead = p;
+    plist->ptail = p;   //构造循环链表
+    p->next = plist->phead;
+    plist->len =1;
+}
+static void Create_List(linklist *plist,int n){
+    //把其余数据添加到循环单链表中
+    int i =0;
+    node *pNew;
+    for (i=2; i<=n; i++) {
+        pNew = GetNode(i);
+        plist->ptail->next = pNew;
+        plist->ptail=pNew;
+        pNew->next = plist->phead;
+        plist->len ++;
+    }
+    //printf("Finish!\n");
+}
+/*void Print_List(linklist *plist){
+    node *pCur = plist->phead;
+    do{
+        printf("The %d person.\n",pCur->data);
+        pCur = pCur->next;
+    }while (pCur!=plist->phead);
+        printf("The length of the List: %d\n",plist->len);
+}*/
+void joseph(linklist *plist, int m){
+    //约瑟夫回环函数实现
+    node *pPre = plist->ptail;
+    node *pCur = plist->phead;
+    int i;
+    while (plist->len!=1) {
+        i=0;
+        while (i<m-1) {
+            pPre = pPre->next;
+            i++;
+        }
+        pCur = pPre->next;   //第m-1个人被杀死
+        pPre->next = pCur->next;
+        printf("%2d was killed !\n",pCur->data);   //打印每次被kill的人
+        free(pCur);
+        plist->len --;
+    }
+    printf("The last one is :%d\n",pPre->data);
+}
+int main(){
+    int m,n;
+    printf("Please input the length of the Circle list:");
+    scanf("%d",&n);
+    printf("Please input the stop point:");
+    scanf("%d",&m);
+    linklist plist;
+    init_list(&plist);
+    Create_List(&plist, n);
+    //Print_List(&plist);
+    joseph(&plist, m);
+    return 0;
+}
