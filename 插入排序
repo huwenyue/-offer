@@ -1,0 +1,42 @@
+//插入排序
+/* 输入：6
+ 5 2 4 6 1 3
+ 输出：5 2 4 6 1 3
+ 2 5 4 6 1 3
+ 2 4 5 6 1 3
+ 2 4 5 6 1 3
+ 1 2 4 5 6 3
+ 1 2 3 4 5 6
+ */
+#include <stdio.h>
+#include <stdlib.h>
+void print(int a[],int n){
+    for(int i=0;i<n;i++){
+        //打印
+        printf("%d ",a[i]);
+    }
+    printf("\n");
+}
+void insertion_sort(int a[],int n){ //插入排序
+    int i,j,v;   //v临时保存A[i]值；j表示在已排序部分插入v的位置
+    for (i=1; i<n; i++) {  //i表示未排序部分的开头元素,从1开始循环，因为默认下标为0是已排序的
+        v = a[i];
+        j=i-1;   //从i的前一个元素开始向前寻找
+        while (j>=0 && a[j]>v) {  //将已排序部分所有比v大的元素顺次后移，找到第一个比v小的数
+            a[j+1]=a[j];   //后移一位
+            j--;
+        }
+        a[j+1] = v;   //将v插入到第一个小于它的元素后面
+        print(a,n);
+    }
+}
+int main(){
+    int n,a[100];
+    scanf("%d",&n);   //输入数组元素
+    for (int i=0; i<n; i++) {
+        scanf("%d",&a[i]);
+    }
+    print(a,n);
+    insertion_sort(a, n);
+    return 0;
+}
