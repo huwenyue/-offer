@@ -1,0 +1,46 @@
+//八皇后
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+using namespace std;
+#define Max 8   //8皇后
+int queen[Max];   //列坐标
+int sum=0;   //解的个数
+void show(){   //图形打印
+    for(int i=0;i<Max;i++){
+        for (int j=0; j<Max; j++) {
+            if(j==queen[i])
+            printf("Q");
+            else
+            printf("*");
+        }
+        printf("\n");
+    }
+    printf("\n\n");
+    sum++;   //每输出一组解，解的个数+1
+}
+int place(int n){
+    //判断是否能放在此处
+    for(int i=0;i<n;i++){    //注意循环的终止条件是n不是Max
+        if(queen[i]==queen[n] || abs(i-n)==abs(queen[i]-queen[n]) )
+        return 0;
+    }
+    return 1;
+}
+void nqueen(int n){
+    //回溯法
+    for (int i=0; i<Max; i++) {
+        queen[n] = i;    //将第n个皇后摆在第i列
+        if(place(n)){
+            if(n==Max-1)
+             show();    //最后一列摆好，则显示全部
+            else
+             nqueen(n+1);    //继续摆下一行
+        }
+    }
+}
+int main(){
+    nqueen(0);   //从下标为0开始
+    printf("总共的解法共：%d ",sum);
+    return 0;
+}
