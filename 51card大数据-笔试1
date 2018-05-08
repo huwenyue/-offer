@@ -1,0 +1,22 @@
+//首先输入n，再输入n个R、G、B字母，将其按照RGB的顺序输出
+#include <map>
+#include<iostream>
+using namespace std;
+int main(){
+    int n=0;
+    char a[n];
+    //char b[n];
+    typedef multimap<int, char> m;
+    m pairs;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+        if(a[i]=='R') pairs.insert(m::value_type(1,'R'));
+        if(a[i]=='G') pairs.insert(m::value_type(2,'G'));
+        if(a[i]=='B') pairs.insert(m::value_type(3,'B'));
+    }
+    for(m::const_iterator i = pairs.begin(); i!=pairs.end();i++){
+        cout<<i->second;
+    }
+    return 0;
+}
